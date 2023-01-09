@@ -1,5 +1,9 @@
-import { user, products, purchases } from "./database";
+import { 
+    getProductById, 
+    queryProductsByName,
+    createPurchase,
+    getAllPurchasesFromClientId 
+} from "./database";
 
-console.log(user)
-console.log(products)
-console.log(purchases)
+console.log(queryProductsByName("screen"));
+console.log(createPurchase("1", "1", 3, 15));
