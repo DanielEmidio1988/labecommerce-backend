@@ -5,12 +5,18 @@ export type TClient = {
     password: string
 }
 
+export enum CATEGORY_PROD {
+    ACESSORIES = "Acessórios",
+    CLOTHES_AND_SHOES = "Roupas e Calçados",
+    ELETRONICS = "Eletrônicos",
+}
+
 // Daniel: Dados do produto cadastrado
 export type TProduct = {
     id: string
     name: string
     price: number
-    category: string
+    category: CATEGORY_PROD
 }
 
 // Daniel: Compra que será realizada pelo cliente
