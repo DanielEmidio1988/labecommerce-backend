@@ -18,23 +18,25 @@ SELECT * FROM clients;
 SELECT * FROM products;
 
  INSERT INTO clients (id, email, password)
-    VALUES ("a001", "daniel@teste.com", "12A09"),
-    ("a002", "cristiano@teste.com", "12A10"),
-    ("a003","cassia@teste.com", "11B00");
+    VALUES ("u001", "daniel@teste.com", "12A09"),
+    ("u002", "cristiano@teste.com", "12A10"),
+    ("u003","cassia@teste.com", "11B00");
 
 
 -- Create Product
  INSERT INTO products (id, name, price, category )
     VALUES 
-    ("a001", "Camiseta", 12, "Roupas e Calçados"), 
-    ("a002", "Tenis de Corrida", 12, "Roupas e Calçados"),
-    ("a003", "Monitor", 99, "Eletrônicos"),
-    ("a004","Garrafa Térmica", 25,"Acessórios"),
-    ("a005", "Mouse", 700,"Eletrônicos"), 
-    ("a006", "Calça", 120, "Roupas e Calçados"),
-    ("a007", "HD", 280, "Eletrônicos"),
-    ("a008","Mochila", 250,"Acessórios"),
-    ("a009", "Cafeteira", 80,"Eletrônicos");
+    ("p001", "Camiseta", 12, "Roupas e Calçados"), 
+    ("p002", "Tenis de Corrida", 12, "Roupas e Calçados"),
+    ("p003", "Monitor", 99, "Eletrônicos"),
+    ("p004","Garrafa Térmica", 25,"Acessórios"),
+    ("p005", "Mouse", 700,"Eletrônicos"), 
+    ("p006", "Calça", 120, "Roupas e Calçados"),
+    ("p007", "HD", 280, "Eletrônicos"),
+    ("p008","Mochila", 250,"Acessórios"),
+    ("p009", "Cafeteira", 80,"Eletrônicos");
+
+DELETE FROM clients;
 
 -- Search Product by name
 SELECT * FROM products
@@ -42,28 +44,28 @@ WHERE name="Monitor";
 
 -- Search Product by id
 SELECT * FROM products 
-WHERE id="a001";
+WHERE id="p001";
 
 -- Delete User by id
 DELETE from products
-WHERE id="a001";
+WHERE id="p001";
 
 -- Delete Product by id
-DELETE from produts
-WHERE id="a001";
+DELETE from products
+WHERE id="p001";
 
 DELETE from clients
-WHERE id="a001";
+WHERE id="u001";
 
 -- Edit User by id
 UPDATE clients
 SET email="monitor-chefe@teste.com"
-WHERE id="a001";
+WHERE id="u001";
 
 -- Edit Product by id
 UPDATE products
 SET name="Monitor"
-WHERE id="a001";
+WHERE id="p001";
 
 -- Get All Users
 SELECT * FROM clients
@@ -107,4 +109,37 @@ clients.password,
 purchases.*
 FROM clients
 INNER JOIN purchases
-ON purchases.buyer_id = clients.id
+ON purchases.buyer_id = clients.id;
+
+-- Criação da tabela de relações
+CREATE TABLE purchases_products
+(purchase_id TEXT NOT NULL, 
+product_id TEXT NOT NULL,
+quantity INTEGER NOT NULL,
+FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+FOREIGN KEY (product_id) REFERENCES products(id));
+
+SELECT * FROM purchases_products;
+
+--Exercicio 2
+--Popule sua tabela purchases_products simulando 3 compras de clientes.
+INSERT INTO purchases_products (purchase_id, product_id, quantity)
+VALUES ("pu001","p001",6), 
+("pu002","p008",2), 
+("pu004","p009",1);
+
+SELECT * FROM purchases_products;
+
+-- Mostre em uma query todas as colunas das tabelas relacionadas (purchases_products, purchases e products).
+SELECT 
+purchases.id AS purchaseID,
+products.id AS productId,
+products.name AS productName,
+purchases_products.quantity,
+purchases.buyer_id,
+purchases.total_price
+FROM purchases_products
+INNER JOIN purchases
+ON purchases_products.purchase_id = purchases.id
+INNER JOIN products
+ON purchases_products.product_id = products.id;
