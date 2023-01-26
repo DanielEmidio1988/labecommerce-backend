@@ -1,15 +1,27 @@
+-- Active: 1674222560711@@127.0.0.1@3306
 CREATE TABLE clients (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    create_at TEXT DEFAULT (DATETIME()) NOT NULL
 );
 
 CREATE TABLE products (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    category BLOB
+    price REAL NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT
 );
+
+-- DROP TABLE clients;
+
+-- DROP TABLE products;
+
+-- DROP TABLE purchases;
+
+-- DROP TABLE purchases_products;
 
 -- Get All Users
 SELECT * FROM clients;
@@ -17,22 +29,22 @@ SELECT * FROM clients;
 -- Get All Products
 SELECT * FROM products;
 
- INSERT INTO clients (id, email, password)
-    VALUES ("u001", "daniel@teste.com", "12A09"),
-    ("u002", "cristiano@teste.com", "12A10"),
-    ("u003","cassia@teste.com", "11B00");
+ INSERT INTO clients (id, name, email, password)
+    VALUES ("u001", "daniel","daniel@teste.com", "12A09"),
+    ("u002", "cristiano","cristiano@teste.com", "12A10"),
+    ("u003","cassia", "cassia@teste.com", "11B00");
 
 
 -- Create Product
- INSERT INTO products (id, name, price, category )
+ INSERT INTO products (id, name, price, description )
     VALUES 
-    ("p001", "Camiseta", 12, "Roupas e Calçados"), 
-    ("p002", "Tenis de Corrida", 12, "Roupas e Calçados"),
-    ("p003", "Monitor", 99, "Eletrônicos"),
+    ("p001", "Camiseta", 12.5, "Roupas e Calçados"), 
+    ("p002", "Tenis de Corrida", 12.7, "Roupas e Calçados"),
+    ("p003", "Monitor", 99.99, "Eletrônicos"),
     ("p004","Garrafa Térmica", 25,"Acessórios"),
-    ("p005", "Mouse", 700,"Eletrônicos"), 
+    ("p005", "Mouse", 700.20,"Eletrônicos"), 
     ("p006", "Calça", 120, "Roupas e Calçados"),
-    ("p007", "HD", 280, "Eletrônicos"),
+    ("p007", "HD", 280.90, "Eletrônicos"),
     ("p008","Mochila", 250,"Acessórios"),
     ("p009", "Cafeteira", 80,"Eletrônicos");
 
@@ -85,7 +97,8 @@ CREATE TABLE purchases (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     total_price REAL NOT NULL,
     paid INTEGER NOT NULL,
-    delivered_at TEXT, 
+    create_at TEXT DEFAULT (DATETIME()) NOT NULL,
+    delivered_at TEXT,  
     buyer_id TEXT NOT NULL,
     FOREIGN KEY (buyer_id) REFERENCES clients (id)
 );
@@ -93,10 +106,10 @@ CREATE TABLE purchases (
 SELECT * from purchases;
 
 INSERT INTO purchases (id, total_price, paid, delivered_at, buyer_id) 
-VALUES ("pu001", 100, 1,NULL,"a001"),
-("pu002", 500, 0,NULL,"a001"),
-("pu003", 80, 0,NULL,"a002"),
-("pu004", 250, 0,NULL,"a003");
+VALUES ("pu001", 100, 1,NULL,"u001"),
+("pu002", 500, 0,NULL,"u001"),
+("pu003", 80, 0,NULL,"u002"),
+("pu004", 250, 0,NULL,"u003");
 
 UPDATE purchases
 SET delivered_at = datetime('now')
@@ -126,8 +139,11 @@ SELECT * FROM purchases_products;
 INSERT INTO purchases_products (purchase_id, product_id, quantity)
 VALUES ("pu001","p001",6), 
 ("pu002","p008",2), 
-("pu004","p009",1);
+("pu004","p009",1), 
+("pu001","p002",6), 
+("pu001","p003",6);
 
+-- Daniel: validação de busca
 SELECT * FROM purchases_products;
 
 -- Mostre em uma query todas as colunas das tabelas relacionadas (purchases_products, purchases e products).
@@ -139,7 +155,13 @@ purchases_products.quantity,
 purchases.buyer_id,
 purchases.total_price
 FROM purchases_products
-INNER JOIN purchases
+INNER JOIN purchases 
 ON purchases_products.purchase_id = purchases.id
 INNER JOIN products
 ON purchases_products.product_id = products.id;
+
+SELECT *
+FROM purchases
+INNER JOIN clients
+ON purcha
+
