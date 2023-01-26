@@ -2,6 +2,7 @@
 export type TClient = {
     id: string
     email: string
+    name: string
     password: string
 }
 
@@ -16,13 +17,28 @@ export type TProduct = {
     id: string
     name: string
     price: number
-    category: CATEGORY_PROD
+    description: string
+    image_url: string
 }
 
 // Daniel: Compra que será realizada pelo cliente
 export type TPurchase = {
-    userId: string
-    productId: string
-    quantity: number
-    totalPrice: number
+    id:string
+    buyer_id: string
+    total_price: number
+    paid:number
+}
+
+export type TProductsInPurchase = {
+    id:string
+    buyer_id: string
+    total_price: number
+    paid:number
+    products:TProduct[]
+}
+
+export type TPurchasesProducts = {
+    purchase_id: string, 
+    product_id: string,
+    quantity:number,
 }

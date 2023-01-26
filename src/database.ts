@@ -4,23 +4,27 @@ export const clients: TClient[] = [{
     id: "01",
     email: "teste@teste.com",
     password: "123456",
+    name: "teste",
 },
 {
     id: "02",
     email: "teste2@teste.com",
     password: "654321",  
+    name: "teste2",
 }]
 
 export const products:TProduct[]=[{
     id: "01",
     name: "bananinha",
     price: 20.22,
-    category: CATEGORY_PROD.ACESSORIES
+    description: "string",
+    image_url: "string",
 },{
     id: "02",
     name: "Astrodev",
     price: 20.23,
-    category: CATEGORY_PROD.ELETRONICS
+    description: "string",
+    image_url: "string",
 }
 ]
 
@@ -38,11 +42,12 @@ export const purchases:TPurchase[]=[{
 
 ]
 
-export function createUser(id : string, email : string, password : string) : string{
+export function createUser(id : string, email : string, password : string, name:string) : string{
     clients.push({
         id,
         email,
-        password
+        password,
+        name,
     });
     return ("Cadastro realizado com sucesso");
 }
@@ -51,12 +56,13 @@ export function getAllClients() : TClient[]{
     return clients;
 }
 
-export function createProduct(id : string, name : string, price : number, category : CATEGORY_PROD) : string{
+export function createProduct(id : string, name : string, price : number, description:string, image_url:string ) : string{
     products.push({
         id,
         name,
         price,
-        category
+        description,
+        image_url,      
     })
     return ("Produto criado com sucesso");
 }
